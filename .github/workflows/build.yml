@@ -46,6 +46,11 @@ jobs:
           echo "version=$(docker run --rm ${{ env.DOCKER_IMAGE_NAME }}:test --version | cut -d '#' -f1)" >> $GITHUB_OUTPUT
           echo "prev_version=$(cat version.txt)" >> $GITHUB_OUTPUT
 
+      - name: Debug Step
+        run: |
+          echo Current Version: ${{ steps.get_version.outputs.version }}
+          echo Previous Version: ${{ steps.get_version.outputs.prev_version }}
+
       - name: Build and push
         uses: docker/build-push-action@v4
         if: ${{ steps.get_version.outputs.version }} != ${{ steps.get_version.outputs.prev_version }}
