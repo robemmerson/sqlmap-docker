@@ -27,20 +27,24 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      - name: Download SQLMap
-        run: |
-          wget -O - https://github.com/sqlmapproject/sqlmap/tarball/master | tar xvfz - && \
-          mv sqlmap* sqlmap
+
+
+      - name: Build and Version SQLMap
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true
+          tags: ${{ env.DOCKER_IMAGE_NAME }}:test
 
       - name: Get SQLMap Version
         id: get_version
         run: |
-          echo "version=$(python3 sqlmap/sqlmap.py --version | cut -d '#' -f1)" >> $GITHUB_OUTPUT
+          echo "version=$(docker run --rm ${{ env.DOCKER_IMAGE_NAME }}:test --version | cut -d '#' -f1)" >> $GITHUB_OUTPUT
 
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
+          context: .
           push: true
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
           tags: |
