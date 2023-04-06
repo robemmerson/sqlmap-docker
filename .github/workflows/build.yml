@@ -50,7 +50,7 @@ jobs:
         run: |
           echo Current Version: ${{ steps.get_version.outputs.version }}
           echo Previous Version: ${{ steps.get_version.outputs.prev_version }}
-          echo $(${{ steps.get_version.outputs.version }} != ${{ steps.get_version.outputs.prev_version }})
+          echo ${{ steps.get_version.outputs.version }} != ${{ steps.get_version.outputs.prev_version }}
 
       - name: Build and push
         uses: docker/build-push-action@v4
