@@ -54,7 +54,7 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v4
-        if: ${{ steps.get_version.outputs.version }} != ${{ steps.get_version.outputs.prev_version }}
+        if: steps.get_version.outputs.version != steps.get_version.outputs.prev_version
         with:
           context: .
           push: true
@@ -64,7 +64,7 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.get_version.outputs.version }}
 
       - name: Update Version
-        if: ${{ steps.get_version.outputs.version }} != ${{ steps.get_version.outputs.prev_version }}
+        if: steps.get_version.outputs.version != steps.get_version.outputs.prev_version
         run: |
           echo ${{ steps.get_version.outputs.version }}>version.txt
           git add version.txt
