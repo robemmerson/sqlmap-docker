@@ -11,6 +11,9 @@ on:
 env:
   DOCKER_IMAGE_NAME: sqlmap
 
+permissions:
+  contents: write
+
 jobs:
   docker:
     runs-on: ubuntu-latest
